@@ -1,0 +1,263 @@
+<c-row class="justify-content-left">
+  <c-col lg="7" md="6" xl="6">
+    <c-card class="mx-4">
+      <c-card-body class="p-4">
+        <h1>Olá, {{ reduceName }}.  Seja bem-vindo</h1>
+        <p class="text-medium-emphasis">É necessário configurar a empresa matriz para visualizar todas as informações do sistema.</p>
+        <div class="d-grid">
+          <button [cModalToggle]="modalXl.id" cButton>INICIAR CONFIGURAÇÃO</button>
+        </div> 
+      </c-card-body>
+    </c-card>
+  </c-col>
+</c-row>
+
+<c-modal #modalXl id="modalXl" size="xl">
+  <c-modal-header>
+    <h5 cModalTitle>Editar Empresa</h5>
+    <button [cModalToggle]="modalXl.id" cButtonClose></button>
+  </c-modal-header>
+  <c-modal-body>
+    <form cForm 
+          class="row g-3 needs-validation" 
+          [formGroup]="simpleForm" 
+          novalidate 
+          (ngSubmit)="onSubmit()">
+          <c-row class="mb-1">
+            <c-col [md]="8" *ngIf="simpleForm.controls['name'] as ctrl">
+              <label cLabel for="name"><strong>Nome da Empresa *</strong></label>
+              <input
+                cFormControl
+                id="name"
+                formControlName="name"
+                placeholder="Digite o nome da empresa"
+                autocomplete="off"
+                required
+                [autofocus]="true"
+                [valid]="
+                  ctrl.touched && ctrl.valid
+                    ? true
+                    : (submitted || ctrl.touched) && ctrl.invalid
+                    ? false
+                    : undefined
+                "
+              />
+              <c-form-feedback *ngIf="submitted || ctrl.invalid" [valid]="!(submitted || ctrl.invalid)">
+                <ng-container *ngIf="ctrl.errors as errors">
+                  <div *ngIf="errors.required">Nome da empresa é obrigatório</div>
+                </ng-container>
+              </c-form-feedback>
+            </c-col>
+            <c-col [md]="4" *ngIf="simpleForm.controls['cnpj'] as ctrl">
+              <label cLabel for="cnpj"><strong>CNPJ da Empresa *</strong></label>
+              <input
+                cFormControl
+                id="cnpj"
+                formControlName="cnpj"
+                placeholder="Digite o CNPJ da Empresa"
+                autocomplete="off"
+                required
+                [autofocus]="true"
+                [valid]="
+                  ctrl.touched && ctrl.valid
+                    ? true
+                    : (submitted || ctrl.touched) && ctrl.invalid
+                    ? false
+                    : undefined
+                "
+              />
+              <c-form-feedback *ngIf="submitted || ctrl.invalid" [valid]="!(submitted || ctrl.invalid)">
+                <ng-container *ngIf="ctrl.errors as errors">
+                  <div *ngIf="errors.required">CNPJ da empresa é obrigatório</div>
+                </ng-container>
+              </c-form-feedback>
+            </c-col>
+          </c-row>
+          <c-row class="mb-1">
+            <c-col [md]="2" *ngIf="simpleForm.controls['cep'] as ctrl">
+              <label cLabel for="cep"><strong>CEP*</strong></label>
+              <input
+                cFormControl
+                id="cep"
+                formControlName="cep"
+                placeholder="Ex: 08780-220"
+                autocomplete="off"
+                required
+                [autofocus]="true"
+                (blur)="getCEP($event)"
+                [valid]="
+                  ctrl.touched && ctrl.valid
+                    ? true
+                    : (submitted || ctrl.touched) && ctrl.invalid
+                    ? false
+                    : undefined
+                "
+              />
+              <c-form-feedback *ngIf="submitted || ctrl.invalid" [valid]="!(submitted || ctrl.invalid)">
+                <ng-container *ngIf="ctrl.errors as errors">
+                  <div *ngIf="errors.required">CEP é obrigatório</div>
+                </ng-container>
+              </c-form-feedback>
+            </c-col>
+            <c-col [md]="3" *ngIf="simpleForm.controls['endereco'] as ctrl">
+              <label cLabel for="endereco"><strong>Endereço</strong></label>
+              <input
+                cFormControl
+                id="endereco"
+                formControlName="endereco"
+                autocomplete="off"
+                required
+                [autofocus]="true"
+               
+              />
+            </c-col>
+            <c-col [md]="2" *ngIf="simpleForm.controls['complemento'] as ctrl">
+              <label cLabel for="complemento"><strong>Complemento</strong></label>
+              <input
+                cFormControl
+                id="complemento"
+                formControlName="complemento"
+                autocomplete="off"
+                required
+                [autofocus]="true"
+              />
+            </c-col>
+            <c-col [md]="2" *ngIf="simpleForm.controls['bairro'] as ctrl">
+              <label cLabel for="bairro"><strong>Bairro</strong></label>
+              <input
+                cFormControl
+                id="bairro"
+                formControlName="bairro"
+                autocomplete="off"
+                required
+                readonly="true"
+                [autofocus]="true"
+              />
+            </c-col>
+            <c-col [md]="2" *ngIf="simpleForm.controls['cidade'] as ctrl">
+              <label cLabel for="cidade"><strong>Cidade</strong></label>
+              <input
+                cFormControl
+                id="cidade"
+                formControlName="cidade"
+                autocomplete="off"
+                required
+                readonly="true"
+                [autofocus]="true"
+              />
+            </c-col>
+            <c-col [md]="1" *ngIf="simpleForm.controls['estado'] as ctrl">
+              <label cLabel for="estado"><strong>Estado</strong></label>
+              <input
+                cFormControl
+                id="estado"
+                formControlName="estado"
+                autocomplete="off"
+                required
+                readonly="true"
+                [autofocus]="true"
+              />
+            </c-col>
+          </c-row>
+          <c-row class="mb-1">
+            <c-col [md]="3" *ngIf="simpleForm.controls['celular'] as ctrl">
+              <label cLabel for="celular"><strong>Celular*</strong></label>
+              <input
+                cFormControl
+                id="celular"
+                formControlName="celular"
+                autocomplete="off"
+                required
+                [autofocus]="true"
+                [valid]="
+                  ctrl.touched && ctrl.valid
+                    ? true
+                    : (submitted || ctrl.touched) && ctrl.invalid
+                    ? false
+                    : undefined
+                "
+              />
+              <c-form-feedback *ngIf="submitted || ctrl.invalid" [valid]="!(submitted || ctrl.invalid)">
+                <ng-container *ngIf="ctrl.errors as errors">
+                  <div *ngIf="errors.required">Celular é obrigatório</div>
+                </ng-container>
+              </c-form-feedback>
+            </c-col>
+            <c-col [md]="3" *ngIf="simpleForm.controls['admin'] as ctrl">
+              <label cLabel for="admin"><strong>Nome do administrador*</strong></label>
+              <input
+                cFormControl
+                id="admin"
+                formControlName="admin"
+                autocomplete="off"
+                required
+                [autofocus]="true"
+                [valid]="
+                  ctrl.touched && ctrl.valid
+                    ? true
+                    : (submitted || ctrl.touched) && ctrl.invalid
+                    ? false
+                    : undefined
+                "
+              />
+              <c-form-feedback *ngIf="submitted || ctrl.invalid" [valid]="!(submitted || ctrl.invalid)">
+                <ng-container *ngIf="ctrl.errors as errors">
+                  <div *ngIf="errors.required">Nome do Administrador é obrigatório</div>
+                </ng-container>
+              </c-form-feedback>
+            </c-col>
+            <c-col [md]="3" *ngIf="simpleForm.controls['cpf'] as ctrl">
+              <label cLabel for="cpf"><strong>CPF*</strong></label>
+              <input
+                cFormControl
+                id="cpf"
+                formControlName="cpf"
+                autocomplete="off"
+                required
+                [autofocus]="true"
+                [valid]="
+                  ctrl.touched && ctrl.valid
+                    ? true
+                    : (submitted || ctrl.touched) && ctrl.invalid
+                    ? false
+                    : undefined
+                "
+              />
+              <c-form-feedback *ngIf="submitted || ctrl.invalid" [valid]="!(submitted || ctrl.invalid)">
+                <ng-container *ngIf="ctrl.errors as errors">
+                  <div *ngIf="errors.required">CPF do admin. é obrigatório</div>
+                </ng-container>
+              </c-form-feedback>
+            </c-col>
+            <c-col [md]="3" *ngIf="simpleForm.controls['email'] as ctrl">
+              <label cLabel for="email"><strong>E-mail*</strong></label>
+              <input
+                cFormControl
+                id="email"
+                formControlName="email"
+                autocomplete="off"
+                required
+                [autofocus]="true"
+                [valid]="
+                  ctrl.touched && ctrl.valid
+                    ? true
+                    : (submitted || ctrl.touched) && ctrl.invalid
+                    ? false
+                    : undefined
+                "
+              />
+              <c-form-feedback *ngIf="submitted || ctrl.invalid" [valid]="!(submitted || ctrl.invalid)">
+                <ng-container *ngIf="ctrl.errors as errors">
+                  <div *ngIf="errors.required">E-mail do admin. é obrigatório</div>
+                </ng-container>
+              </c-form-feedback>
+            </c-col>
+          </c-row>
+      <c-col xs="12">
+        <button cButton color="primary" type="submit">
+          Salvar
+        </button>
+      </c-col>
+    </form>
+  </c-modal-body>
+</c-modal>
