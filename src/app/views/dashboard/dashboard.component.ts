@@ -16,6 +16,7 @@ export class DashboardComponent implements OnInit {
   formErrors: any;
   formControls!: string[];
   reduceName: string | undefined
+  userData: any;
 
   constructor( private formBuilder: FormBuilder,
                 private router: Router,
@@ -48,7 +49,9 @@ export class DashboardComponent implements OnInit {
     this.formControls = Object.keys(this.simpleForm.controls);
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.userData = this.user.getUserData();
+  }
 
   getCEP(ev: any)
   {
@@ -74,8 +77,8 @@ export class DashboardComponent implements OnInit {
   onSubmit() {
     if (this.onValidate()) {
        this.user.addUser(this.simpleForm.value).then(result => {
-        console.log(result)
         alert("Usuário Salvo com sucesso!");
+        location.reload();
       })
     }
   }

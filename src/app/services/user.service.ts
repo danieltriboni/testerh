@@ -10,11 +10,13 @@ export class UserService {
   public isRegistered: boolean = true;
   public user: any;
   public result!: Observable<any>;
-  public userLevel: number = 0;
+  public userLevel: number = 4;
   public hiddenMenu: any[] = []
   public menus: any = [];
 
-  constructor() {}
+  constructor() {
+   
+  }
 
   public returnMenus()
   {
@@ -26,17 +28,22 @@ export class UserService {
       },
       {
         name: 'Config. da empresa',
-        url: '/base',
+        url: '/dashboard',
         attributes: this.checkUserLevel('user', this.userLevel),
         iconComponent: { name: 'cil-building' },
         children: [
           {
             name: 'Minha Empresa',
-            url: '/base/accordion',
+            url: '/dashboard',
             attributes: this.checkUserLevel('user', this.userLevel)
           },
           {
             name: 'Benefícios',
+            url: '/base/breadcrumbs',
+            attributes: this.checkUserLevel('admin', this.userLevel)
+          },
+          {
+            name: 'Áreas',
             url: '/base/breadcrumbs',
             attributes: this.checkUserLevel('admin', this.userLevel)
           },
@@ -53,6 +60,30 @@ export class UserService {
         ]
       },
       {
+        name: 'Config. do sistema',
+        url: '/settings',
+        attributes: this.checkUserLevel('admin', this.userLevel),
+        iconComponent: { name: 'cil-cog' },
+        children: [
+          {
+            name: 'Parâmetros',
+            url: '/dashboard',
+            attributes: this.checkUserLevel('user', this.userLevel)
+          }
+        ]
+      },
+      {
+        name: 'Vagas',
+        title: true,
+        attributes: this.checkUserLevel('admin', this.userLevel)
+      },
+      {
+        name: 'Gestão de vagas',
+        url: '/charts',
+        iconComponent: { name: 'cil-pen' },
+        attributes: this.checkUserLevel('admin', this.userLevel)
+      },
+      {
         name: 'Usuários',
         title: true,
         attributes: this.checkUserLevel('admin', this.userLevel)
@@ -66,7 +97,7 @@ export class UserService {
       {
         name: 'Todos os usuários',
         url: '/charts',
-        iconComponent: { name: 'cil-group' },
+        iconComponent: { name: 'cil-people' },
         attributes: this.checkUserLevel('admin', this.userLevel)
       },
     ];
@@ -79,7 +110,7 @@ export class UserService {
     switch(menu)
     {
       case 'admin': return (level == 3 ? null : { hidden: true } );
-      case 'user': return (level == 4 ? null : { hidden: true } )
+      case 'user': return (level == 4 || level == 3 ? null : { hidden: true } )
       break;
     }
     return { hidden: true }
@@ -89,7 +120,6 @@ export class UserService {
   {
     this.user = usr;
     this.user.level = (this.user.cnpj ? 3 : 4);
-    this.userLevel = this.user.level;
     /* return this.result = this.user.pipe(
 			tap(_ => console.warn(`fetched`)),
 			catchError(this.handleError(`Registro do usuário`))
@@ -102,11 +132,19 @@ export class UserService {
 
   public getUserName()
   {
-    let _name = localStorage.getItem('user')
+    let _name = this.getUserData()
     if(_name)
     { 
-      let _rname = JSON.parse(_name)
-      return _rname.name.split(' ')[0]
+      return _name.name.split(' ')[0]
+    }
+  }
+
+  public getUserData()
+  {
+    let _data = localStorage.getItem('user')
+    if(_data)
+    { 
+      return JSON.parse(_data)
     }
   }
 

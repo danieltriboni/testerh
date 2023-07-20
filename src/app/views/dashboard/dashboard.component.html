@@ -1,5 +1,71 @@
 <c-row class="justify-content-left">
-  <c-col lg="7" md="6" xl="6">
+
+  <c-col xs="12" *ngIf="userData.cnpj">
+    <c-card class="mb-4">
+      <c-card-header>
+        <strong>Empresa</strong>
+      </c-card-header>
+      <c-card-body>
+        <c-row class="mb-1">
+          <c-col [md]="3">
+            <h5 cCardTitle>Nome da empresa</h5>
+            <p cCardText>
+              {{ userData.name }}
+            </p>
+          </c-col>
+          <c-col [md]="3">
+            <h5 cCardTitle>CNPJ da empresa</h5>
+            <p cCardText>
+              {{ userData.cnpj }}
+            </p>
+          </c-col>
+          <c-col [md]="6">
+            <h5 cCardTitle>Nome do administrador</h5>
+            <p cCardText>
+              {{ userData.admin }}
+            </p>
+          </c-col>
+        </c-row>
+        <c-row class="mb-1">
+          <c-col [md]="3">
+            <h5 cCardTitle>CPF administrador</h5>
+            <p cCardText>
+              {{ userData.cpf }}
+            </p>
+          </c-col>
+          <c-col [md]="6">
+            <h5 cCardTitle>E-mail</h5>
+            <p cCardText>
+              {{ userData.email }}
+            </p>
+          </c-col>
+          <c-col [md]="3">
+            <h5 cCardTitle>Telefone</h5>
+            <p cCardText>
+              {{ userData.celular }}
+            </p>
+          </c-col>
+        </c-row>
+        <c-row class="mb-1">
+          <c-col [md]="3">
+            <h5 cCardTitle>CEP</h5>
+            <p cCardText>
+              {{ userData.cep }}
+            </p>
+          </c-col>
+          <c-col [md]="9">
+            <h5 cCardTitle>Endereço</h5>
+            <p cCardText>
+              {{ userData.endereco }} {{ userData.complemento }}, {{ userData.bairro }}<BR>
+                {{ userData.cidade }}/{{ userData.estado }}
+            </p>
+          </c-col>
+        </c-row>
+      </c-card-body>
+    </c-card>
+  </c-col>
+
+  <c-col lg="7" md="6" xl="6" *ngIf="!userData.cnpj">
     <c-card class="mx-4">
       <c-card-body class="p-4">
         <h1>Olá, {{ reduceName }}.  Seja bem-vindo</h1>

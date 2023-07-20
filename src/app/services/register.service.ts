@@ -12,7 +12,8 @@ export class RegisterService {
   public items$: INavData[];
 
   constructor(public user: UserService, private http: HttpClient) {
-    this.user.userLevel = 4;
+    let _level = this.user.getUserData()
+    this.user.userLevel = _level ? _level.level : 4
     this.items$ = this.getSidebarItems(user.returnMenus())
   }
 
